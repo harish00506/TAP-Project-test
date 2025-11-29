@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const {
-  applyLeave,
-  getMyRequests,
-  cancelLeaveRequest,
-  getLeaveBalance,
-  getAllRequests,
-  getPendingRequests,
-  approveLeaveRequest,
-  rejectLeaveRequest,
+    applyLeave,
+    getMyRequests,
+    cancelLeaveRequest,
+    getLeaveBalance,
+    getAllRequests,
+    getPendingRequests,
+    approveLeaveRequest,
+    rejectLeaveRequest,
 } = require('../controllers/leaveController');
 const { protect, verifyEmail, authorize } = require('../middleware/auth');
 

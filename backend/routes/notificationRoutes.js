@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getNotifications,
-  markAsRead,
-  markAllAsRead,
+    getNotifications,
+    markAsRead,
+    markAllAsRead,
 } = require('../controllers/notificationController');
 const { protect, verifyEmail } = require('../middleware/auth');
 

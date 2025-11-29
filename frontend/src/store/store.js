@@ -5,12 +5,12 @@ import dashboardReducer from './slices/dashboardSlice';
 import notificationReducer from './slices/notificationSlice';
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    leave: leaveReducer,
-    dashboard: dashboardReducer,
-    notification: notificationReducer,
-  },
+    reducer: {
+        auth: authReducer,
+        leave: leaveReducer,
+        dashboard: dashboardReducer,
+        notification: notificationReducer,
+    },
 });
 
 export default store;

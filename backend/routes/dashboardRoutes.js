@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getEmployeeDashboard,
-  getManagerDashboard,
+    getEmployeeDashboard,
+    getManagerDashboard,
 } = require('../controllers/dashboardController');
 const { protect, verifyEmail, authorize } = require('../middleware/auth');
 

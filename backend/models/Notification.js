@@ -1,33 +1,33 @@
 const mongoose = require('mongoose');
 
 const notificationSchema = new mongoose.Schema(
-  {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+    {
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        type: {
+            type: String,
+            enum: ['leave_applied', 'leave_approved', 'leave_rejected', 'leave_cancelled'],
+            required: true,
+        },
+        message: {
+            type: String,
+            required: true,
+        },
+        leaveRequestId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'LeaveRequest',
+        },
+        isRead: {
+            type: Boolean,
+            default: false,
+        },
     },
-    type: {
-      type: String,
-      enum: ['leave_applied', 'leave_approved', 'leave_rejected', 'leave_cancelled'],
-      required: true,
-    },
-    message: {
-      type: String,
-      required: true,
-    },
-    leaveRequestId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'LeaveRequest',
-    },
-    isRead: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
+    {
+        timestamps: true,
+    }
 );
 
 // Index for faster queries

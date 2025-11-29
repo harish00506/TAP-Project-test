@@ -2,27 +2,27 @@ const nodemailer = require('nodemailer');
 
 // Create transporter
 const createTransporter = () => {
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
+    return nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
+        },
+    });
 };
 
 // Send verification email
 const sendVerificationEmail = async (email, name, verificationToken) => {
-  const transporter = createTransporter();
-  const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    const transporter = createTransporter();
+    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
 
-  const mailOptions = {
-    from: `"ELS - Employee Leave System" <${process.env.EMAIL_FROM}>`,
-    to: email,
-    subject: 'Verify Your Email Address',
-    html: `
+    const mailOptions = {
+        from: `"ELS - Employee Leave System" <${process.env.EMAIL_FROM}>`,
+        to: email,
+        subject: 'Verify Your Email Address',
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Welcome to Employee Leave Management System!</h2>
         <p>Hi ${name},</p>
@@ -41,26 +41,26 @@ const sendVerificationEmail = async (email, name, verificationToken) => {
         </p>
       </div>
     `,
-  };
+    };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log('Verification email sent to:', email);
-  } catch (error) {
-    console.error('Error sending verification email:', error);
-    throw new Error('Failed to send verification email');
-  }
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Verification email sent to:', email);
+    } catch (error) {
+        console.error('Error sending verification email:', error);
+        throw new Error('Failed to send verification email');
+    }
 };
 
 // Send leave application notification to manager
 const sendLeaveApplicationEmail = async (managerEmail, employeeName, leaveDetails) => {
-  const transporter = createTransporter();
+    const transporter = createTransporter();
 
-  const mailOptions = {
-    from: `"ELS - Employee Leave System" <${process.env.EMAIL_FROM}>`,
-    to: managerEmail,
-    subject: `New Leave Request from ${employeeName}`,
-    html: `
+    const mailOptions = {
+        from: `"ELS - Employee Leave System" <${process.env.EMAIL_FROM}>`,
+        to: managerEmail,
+        subject: `New Leave Request from ${employeeName}`,
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">New Leave Request</h2>
         <p>A new leave request has been submitted:</p>
@@ -81,28 +81,28 @@ const sendLeaveApplicationEmail = async (managerEmail, employeeName, leaveDetail
         </div>
       </div>
     `,
-  };
+    };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log('Leave application email sent to manager:', managerEmail);
-  } catch (error) {
-    console.error('Error sending leave application email:', error);
-    // Don't throw error - notification failure shouldn't block the request
-  }
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Leave application email sent to manager:', managerEmail);
+    } catch (error) {
+        console.error('Error sending leave application email:', error);
+        // Don't throw error - notification failure shouldn't block the request
+    }
 };
 
 // Send leave status update to employee
 const sendLeaveStatusEmail = async (employeeEmail, employeeName, leaveDetails, status, managerComment) => {
-  const transporter = createTransporter();
-  const statusColor = status === 'approved' ? '#10B981' : '#EF4444';
-  const statusText = status === 'approved' ? 'Approved' : 'Rejected';
+    const transporter = createTransporter();
+    const statusColor = status === 'approved' ? '#10B981' : '#EF4444';
+    const statusText = status === 'approved' ? 'Approved' : 'Rejected';
 
-  const mailOptions = {
-    from: `"ELS - Employee Leave System" <${process.env.EMAIL_FROM}>`,
-    to: employeeEmail,
-    subject: `Leave Request ${statusText}`,
-    html: `
+    const mailOptions = {
+        from: `"ELS - Employee Leave System" <${process.env.EMAIL_FROM}>`,
+        to: employeeEmail,
+        subject: `Leave Request ${statusText}`,
+        html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: ${statusColor};">Leave Request ${statusText}</h2>
         <p>Hi ${employeeName},</p>
@@ -123,19 +123,19 @@ const sendLeaveStatusEmail = async (employeeEmail, employeeName, leaveDetails, s
         </div>
       </div>
     `,
-  };
+    };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log('Leave status email sent to employee:', employeeEmail);
-  } catch (error) {
-    console.error('Error sending leave status email:', error);
-    // Don't throw error - notification failure shouldn't block the request
-  }
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Leave status email sent to employee:', employeeEmail);
+    } catch (error) {
+        console.error('Error sending leave status email:', error);
+        // Don't throw error - notification failure shouldn't block the request
+    }
 };
 
 module.exports = {
-  sendVerificationEmail,
-  sendLeaveApplicationEmail,
-  sendLeaveStatusEmail,
+    sendVerificationEmail,
+    sendLeaveApplicationEmail,
+    sendLeaveStatusEmail,
 };
