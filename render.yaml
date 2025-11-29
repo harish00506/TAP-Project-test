@@ -1,0 +1,53 @@
+services:
+  # Backend API Service
+  - type: web
+    name: els-backend
+    runtime: node
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: EMAIL_VERIFICATION_SECRET
+        generateValue: true
+      - key: EMAIL_SERVICE
+        value: gmail
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: DEFAULT_MANAGER_EMAIL
+        sync: false
+    healthCheckPath: /api/health
+
+  # Frontend Service
+  - type: web
+    name: els-frontend
+    runtime: node
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npx serve -s build -l 3000
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false
