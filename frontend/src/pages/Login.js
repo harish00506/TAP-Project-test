@@ -82,17 +82,29 @@ const Login = () => {
             return;
         }
 
-        const result = await dispatch(login(loginData));
-        if (login.fulfilled.match(result)) {
-            // Direct redirect after successful login
-            const loggedInUser = result.payload?.data?.user;
-            if (loggedInUser) {
-                if (loggedInUser.role === 'manager') {
-                    navigate('/manager/dashboard');
-                } else {
-                    navigate('/employee/dashboard');
+        try {
+            const result = await dispatch(login(loginData));
+            console.log('Login result:', result);
+            
+            if (login.fulfilled.match(result)) {
+                // Direct redirect after successful login
+                const loggedInUser = result.payload?.data?.user;
+                console.log('Logged in user:', loggedInUser);
+                
+                if (loggedInUser) {
+                    if (loggedInUser.role === 'manager') {
+                        navigate('/manager/dashboard', { replace: true });
+                    } else {
+                        navigate('/employee/dashboard', { replace: true });
+                    }
                 }
+            } else if (login.rejected.match(result)) {
+                // Show error message
+                setFormError(result.payload?.message || 'Login failed. Please check your credentials.');
             }
+        } catch (err) {
+            console.error('Login error:', err);
+            setFormError('An error occurred during login. Please try again.');
         }
     };
 
