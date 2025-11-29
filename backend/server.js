@@ -15,8 +15,16 @@ const app = express();
 // Connect to database
 connectDB();
 
+// CORS configuration
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -53,10 +61,12 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+// Start server only if not in Vercel serverless environment
+if (process.env.VERCEL !== '1') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    });
+}
 
 module.exports = app;
