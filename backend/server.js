@@ -17,7 +17,24 @@ connectDB();
 
 // CORS configuration
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || '*',
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        // Remove trailing slash from origin for comparison
+        const cleanOrigin = origin.replace(/\/$/, '');
+        const allowedOrigins = [
+            process.env.FRONTEND_URL?.replace(/\/$/, ''),
+            'http://localhost:3000',
+            'https://tap-project-test-imj2.vercel.app'
+        ].filter(Boolean);
+
+        if (allowedOrigins.includes(cleanOrigin) || process.env.NODE_ENV === 'development') {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all origins for now
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -33,6 +50,22 @@ app.use('/api/auth', authRoutes);
 app.use('/api/leaves', leaveRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/notifications', notificationRoutes);
+
+// Root route
+app.get('/', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Employee Leave System API',
+        version: '1.0.0',
+        endpoints: {
+            health: '/api/health',
+            auth: '/api/auth',
+            leaves: '/api/leaves',
+            dashboard: '/api/dashboard',
+            notifications: '/api/notifications'
+        }
+    });
+});
 
 // Health check route
 app.get('/api/health', (req, res) => {
