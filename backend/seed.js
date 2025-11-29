@@ -24,6 +24,13 @@ const seedData = async () => {
         // Create sample users (password will be hashed by pre-save hook)
         const password = 'password123';
 
+        // Default leave balance for all users
+        const defaultLeaveBalance = {
+            sickLeave: 10,
+            casualLeave: 5,
+            vacation: 5,
+        };
+
         // Create employees
         const employee1 = await User.create({
             name: 'John Doe',
@@ -31,11 +38,7 @@ const seedData = async () => {
             password,
             role: 'employee',
             isEmailVerified: true,
-            leaveBalance: {
-                sickLeave: 8,
-                casualLeave: 3,
-                vacation: 5,
-            },
+            leaveBalance: defaultLeaveBalance,
         });
 
         const employee2 = await User.create({
@@ -44,11 +47,7 @@ const seedData = async () => {
             password,
             role: 'employee',
             isEmailVerified: true,
-            leaveBalance: {
-                sickLeave: 10,
-                casualLeave: 5,
-                vacation: 3,
-            },
+            leaveBalance: defaultLeaveBalance,
         });
 
         const employee3 = await User.create({
@@ -57,11 +56,7 @@ const seedData = async () => {
             password,
             role: 'employee',
             isEmailVerified: true,
-            leaveBalance: {
-                sickLeave: 7,
-                casualLeave: 4,
-                vacation: 4,
-            },
+            leaveBalance: defaultLeaveBalance,
         });
 
         // Create manager
@@ -71,11 +66,7 @@ const seedData = async () => {
             password,
             role: 'manager',
             isEmailVerified: true,
-            leaveBalance: {
-                sickLeave: 10,
-                casualLeave: 5,
-                vacation: 5,
-            },
+            leaveBalance: defaultLeaveBalance,
         });
 
         console.log('Created users:');
