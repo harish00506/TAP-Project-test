@@ -41,7 +41,8 @@ const Login = () => {
     const [formError, setFormError] = useState('');
 
     useEffect(() => {
-        if (user && user.isEmailVerified) {
+        if (user) {
+            // Allow login even without email verification
             if (user.role === 'manager') {
                 navigate('/manager/dashboard');
             } else {

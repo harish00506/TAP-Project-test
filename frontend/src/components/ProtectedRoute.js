@@ -9,9 +9,11 @@ const ProtectedRoute = ({ children, role }) => {
         return <Navigate to="/login" replace />;
     }
 
-    if (!user?.isEmailVerified) {
-        return <Navigate to="/verify-email" replace />;
-    }
+    // Email verification is optional - allow access even without verification
+    // Uncomment the below block if you want to enforce email verification
+    // if (!user?.isEmailVerified) {
+    //     return <Navigate to="/verify-email" replace />;
+    // }
 
     if (role && user?.role !== role) {
         // Redirect to appropriate dashboard based on user role
