@@ -15,33 +15,20 @@ const app = express();
 // Connect to database
 connectDB();
 
-// CORS configuration
-const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
+// CORS - Allow all origins for Vercel deployment
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-        // Remove trailing slash from origin for comparison
-        const cleanOrigin = origin.replace(/\/$/, '');
-        const allowedOrigins = [
-            process.env.FRONTEND_URL?.replace(/\/$/, ''),
-            'http://localhost:3000',
-            'https://tap-project-test-imj2.vercel.app'
-        ].filter(Boolean);
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    next();
+});
 
-        if (allowedOrigins.includes(cleanOrigin) || process.env.NODE_ENV === 'development') {
-            callback(null, true);
-        } else {
-            callback(null, true); // Allow all origins for now
-        }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-// Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
