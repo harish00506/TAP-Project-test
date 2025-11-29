@@ -84,7 +84,15 @@ const Login = () => {
 
         const result = await dispatch(login(loginData));
         if (login.fulfilled.match(result)) {
-            // Redirect handled in useEffect
+            // Direct redirect after successful login
+            const loggedInUser = result.payload?.data?.user;
+            if (loggedInUser) {
+                if (loggedInUser.role === 'manager') {
+                    navigate('/manager/dashboard');
+                } else {
+                    navigate('/employee/dashboard');
+                }
+            }
         }
     };
 
